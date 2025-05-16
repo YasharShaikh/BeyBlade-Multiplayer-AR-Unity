@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
+    public static LobbyManager Instance;
+
     [SerializeField] InputField playerNameInputField;
     [SerializeField] GameObject ui_Login;
     [SerializeField] GameObject ui_Lobby;
@@ -16,8 +18,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [SerializeField] Text text_ConnectionStatus;
     [Space]
     [SerializeField] string Scene_Loading;
+
     #region Unity Methods
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         ui_Login.SetActive(true);
@@ -65,7 +73,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void OnQuickMatchButtonClick()
     {
-        SceneManager.LoadScene(Scene_Loading);
+        SceneLoader.Instance.LoadeScene(Scene_Loading);
     }
     #endregion
 
