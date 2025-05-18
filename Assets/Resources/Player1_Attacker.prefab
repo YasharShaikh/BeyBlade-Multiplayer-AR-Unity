@@ -182,6 +182,10 @@ GameObject:
   - component: {fileID: 2523371896380985824}
   - component: {fileID: 500507489812524016}
   - component: {fileID: 7692753358274580290}
+  - component: {fileID: -3896256064043292292}
+  - component: {fileID: 3320200763552015924}
+  - component: {fileID: -3395999919954664736}
+  - component: {fileID: 8471733774041154909}
   m_Layer: 0
   m_Name: Player1_Attacker
   m_TagString: Player
@@ -306,6 +310,84 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spinSpeed: 3000
   doSpin: 1
+--- !u!114 &-3896256064043292292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2523371896380985836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec2d73fff6049e946966236251571684, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text_PlayerName: {fileID: 2523371896480695254}
+--- !u!114 &3320200763552015924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2523371896380985836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2557af42654bcad43990bcda1b09eba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  synchronizeVelocity: 1
+  synchronizeAngularVelocity: 1
+  isTeleportableEnabled: 1
+  teleportIfDistanceGreater: 1
+--- !u!114 &-3395999919954664736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2523371896380985836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1807d53232638054aa7aa6335a773cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startSpinSpeed: 0
+  currentSpinSpeed: 0
+  img_SpinSpeedbar: {fileID: 2523371896873197419}
+  text_SpinSpeedRatio: {fileID: 4278660854099477796}
+  common_dmg_coefficiant: 0.04
+  doDmg_coefficient_attacker: 10
+  getDmg_coefficient_attacker: 10
+  doDmg_coefficient_defender: 0.75
+  getDmg_coefficient_defender: 0.2
+  ui_3d: {fileID: 2523371896678793442}
+  ui_DeathPanel: {fileID: 3593783272886976281, guid: 0367e5d2c0c49da4b80c7fe1c169056c, type: 3}
+  deathPanel: {fileID: 0}
+  isAttacker: 0
+  isDefender: 0
+--- !u!114 &8471733774041154909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2523371896380985836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 3320200763552015924}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2523371896480695252
 GameObject:
   m_ObjectHideFlags: 0

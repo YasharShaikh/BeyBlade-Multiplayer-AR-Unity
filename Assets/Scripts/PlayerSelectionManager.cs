@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using TMPro;
+
 public class PlayerSelectionManager : MonoBehaviour
 {
     [SerializeField] Button btn_Next;
@@ -13,8 +15,14 @@ public class PlayerSelectionManager : MonoBehaviour
 
     public GameObject[] spinnerTopModels;
 
+    [Space]
+    [SerializeField] TextMeshProUGUI text_playerModeType;
+    [SerializeField] GameObject ui_Selection;
+    [SerializeField] GameObject ui_AfterSelection;
     private void Start()
     {
+        ui_Selection.SetActive(true);
+        ui_AfterSelection.SetActive(false); 
         playerSelectionNumber = 0;
     }
 
@@ -22,32 +30,57 @@ public class PlayerSelectionManager : MonoBehaviour
     public void NextPlayer()
     {
         playerSelectionNumber++;
-        btn_Next.enabled = false;
-        btn_Previous.enabled = false;
-        if (playerSelectionNumber > spinnerTopModels.Length)
+
+        if (playerSelectionNumber >= spinnerTopModels.Length)
         {
             playerSelectionNumber = 0;
         }
         StartCoroutine(Rotate(Vector3.up, playerSwitcherTransform, 90.0f, 1.0f));
+
+
+        UpdatePlayerModeUI();
+
     }
 
     public void PreviousPlayer()
     {
         playerSelectionNumber--;
-        btn_Next.enabled = false;
-        btn_Previous.enabled = false;
+
         if (playerSelectionNumber < 0)
         {
             playerSelectionNumber = spinnerTopModels.Length - 1;
         }
         StartCoroutine(Rotate(Vector3.up, playerSwitcherTransform, -90.0f, 1.0f));
+        UpdatePlayerModeUI();
     }
 
     public void OnSelectButtonClick()
     {
-        ExitGames.Client.Photon.Hashtable playerSelectionProp = new ExitGames.Client.Photon.Hashtable { { ARMulltiplayerBeybladeGame.PLAYER_SELECTIO_NUMBER, playerSelectionNumber} };
+        ui_Selection.SetActive(false);
+        ui_AfterSelection.SetActive(true);
+        ExitGames.Client.Photon.Hashtable playerSelectionProp = new ExitGames.Client.Photon.Hashtable { { ARMulltiplayerBeybladeGame.PLAYER_SELECTION_NUMBER, playerSelectionNumber} };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerSelectionProp);
 
+    }
+    public void OnReselectButtonClikced()
+    {
+        ui_Selection.SetActive(true);
+        ui_AfterSelection.SetActive(false);
+    }
+    public void OnBattleButtonClicked()
+    {
+        SceneLoader.Instance.LoadeScene("Scene_Gameplay");
+    }
+    public void OnBackButtonClicked()
+    {
+        SceneLoader.Instance.LoadeScene("Scene_Lobby");
+    }
+    private void UpdatePlayerModeUI()
+    {
+        if (playerSelectionNumber == 0 || playerSelectionNumber == 1)
+            text_playerModeType.text = "Attack";
+        else
+            text_playerModeType.text = "Defence";
     }
     #endregion
 
@@ -66,6 +99,11 @@ public class PlayerSelectionManager : MonoBehaviour
         }
 
         target.rotation = endRotation;
+
+        // Re-enable buttons
+        btn_Next.enabled = true;
+        btn_Previous.enabled = true;
     }
+
     #endregion
 }

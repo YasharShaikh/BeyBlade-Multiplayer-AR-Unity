@@ -207,8 +207,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1767006481}
+        m_TargetAssemblyTypeName: PlayerSelectionManager, Assembly-CSharp
         m_MethodName: OnBattleButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -2239,8 +2239,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1767006481}
+        m_TargetAssemblyTypeName: PlayerSelectionManager, Assembly-CSharp
         m_MethodName: OnBackButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -2631,9 +2631,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnSelectButtonClicked
+      - m_Target: {fileID: 1767006481}
+        m_TargetAssemblyTypeName: PlayerSelectionManager, Assembly-CSharp
+        m_MethodName: OnSelectButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3383,6 +3383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec5c40335f242a4ca0b63d67a3854fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  btn_Next: {fileID: 1017666831}
+  btn_Previous: {fileID: 1289593102}
   playerSwitcherTransform: {fileID: 1158278241}
   playerSelectionNumber: 0
   spinnerTopModels:
@@ -3390,6 +3392,9 @@ MonoBehaviour:
   - {fileID: 882062676}
   - {fileID: 174618834}
   - {fileID: 955095336}
+  text_playerModeType: {fileID: 2010573073}
+  ui_Selection: {fileID: 1325910398}
+  ui_AfterSelection: {fileID: 347055307}
 --- !u!4 &1767006482
 Transform:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Spinner : MonoBehaviour
 {
-    [SerializeField] float spinSpeed = 3000.0f;
+    public  float spinSpeed = 3000.0f;
     [SerializeField] bool doSpin = false;
     Rigidbody rb;
     GameObject playerGraphics;

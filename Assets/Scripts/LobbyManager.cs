@@ -28,10 +28,20 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        ui_Login.SetActive(true);
-        ui_Lobby.SetActive(false);
-        ui_3dObject.SetActive(false);
-        ui_ConnectionStatus.SetActive(false);
+        if (PhotonNetwork.IsConnected) 
+        {
+            ui_Login.SetActive(true);
+            ui_Lobby.SetActive(true);
+            ui_3dObject.SetActive(false);
+            ui_ConnectionStatus.SetActive(false);
+        }else
+        {
+            ui_Login.SetActive(true);
+            ui_Lobby.SetActive(false);
+            ui_3dObject.SetActive(false);
+            ui_ConnectionStatus.SetActive(false);
+        }
+        
     }
 
     // Update is called once per frame

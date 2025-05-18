@@ -87,7 +87,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -99,9 +99,9 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 514
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -405,6 +405,10 @@ GameObject:
   - component: {fileID: 4573508279389110243}
   - component: {fileID: 1362521092941618468}
   - component: {fileID: -428425686222389623}
+  - component: {fileID: -680164419467656160}
+  - component: {fileID: 7670993639951979500}
+  - component: {fileID: -3725369754071825054}
+  - component: {fileID: -3958404552567198267}
   m_Layer: 0
   m_Name: Player3_Defender
   m_TagString: Player
@@ -571,6 +575,83 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spinSpeed: 3000
   doSpin: 1
+--- !u!114 &-680164419467656160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269595059983960058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec2d73fff6049e946966236251571684, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text_PlayerName: {fileID: 2269595060351980992}
+--- !u!114 &7670993639951979500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269595059983960058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2557af42654bcad43990bcda1b09eba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  synchronizeVelocity: 1
+  synchronizeAngularVelocity: 1
+  isTeleportableEnabled: 1
+  teleportIfDistanceGreater: 1
+--- !u!114 &-3725369754071825054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269595059983960058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1807d53232638054aa7aa6335a773cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startSpinSpeed: 0
+  currentSpinSpeed: 0
+  img_SpinSpeedbar: {fileID: 2269595059424446845}
+  text_SpinSpeedRatio: {fileID: 512058580104729394}
+  common_dmg_coefficiant: 0.04
+  doDmg_coefficient_attacker: 10
+  getDmg_coefficient_attacker: 10
+  doDmg_coefficient_defender: 0.75
+  getDmg_coefficient_defender: 0.2
+  ui_3d: {fileID: 2269595059476436724}
+  ui_DeathPanel: {fileID: 3593783272886976281, guid: 0367e5d2c0c49da4b80c7fe1c169056c, type: 3}
+  isAttacker: 0
+  isDefender: 0
+--- !u!114 &-3958404552567198267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2269595059983960058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 7670993639951979500}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2269595060150874238
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,7 +817,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -748,9 +829,9 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 514
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -763,7 +844,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
