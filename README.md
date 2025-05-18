@@ -81,16 +81,42 @@ Build a cross-platform AR multiplayer experience to:
 * `PhotonNetwork.Instantiate()`: Spawns networked Beyblade prefabs.
 * `PhotonView`: Ensures transforms and logic are synced.
 * `OnJoinedRoom`, `OnPlayerLeft`: Manage multiplayer events.
+<div style="background:#2d2d2d; color:#ccc; padding:10px; border-radius:5px; font-family: monospace;">
+<pre>
+Vector3 spawnPosition = new Vector3(0, 0.1f, 0);
+PhotonNetwork.Instantiate("BeybladePrefab", spawnPosition, Quaternion.identity);
+</pre>
+</div>
 
 **AR Integration**
 * `ARPlaneManager`: Detects horizontal surfaces.
 * `ARAnchorManager`: Anchors arena/Beyblade prefabs to planes.
 * Keeps virtual content fixed to real-world positions.
+<div style="background:#2d2d2d; color:#ccc; padding:10px; border-radius:5px; font-family: monospace;">
+<pre>
+List<ARRaycastHit> hits = new List<ARRaycastHit>();
+if (arRaycastManager.Raycast(touchPos, hits, TrackableType.PlaneWithinPolygon)) {
+    Pose hitPose = hits[0].pose;
+    Instantiate(arenaPrefab, hitPose.position, hitPose.rotation);
+}
+</pre>
+</div>
+
 
 **Game Logic**
 * Beyblade prefabs include `Rigidbody`, `Collider`, and custom spin logic.
 * Launch force is applied via touch or motion input.
 * Collision events (via `OnCollisionEnter`) trigger effects or knockouts.
+<div style="background:#2d2d2d; color:#ccc; padding:10px; border-radius:5px; font-family: monospace;">
+<pre>
+void OnCollisionEnter(Collision other) {
+    if (other.gameObject.CompareTag("Beyblade")) {
+        // Apply damage or bounce logic here
+    }
+}
+</pre>
+</div>
+
 
 ---
 
