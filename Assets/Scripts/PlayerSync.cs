@@ -16,12 +16,16 @@ public class PlayerSync : MonoBehaviour, IPunObservable
     [SerializeField] bool isTeleportableEnabled = true;
     [SerializeField] float teleportIfDistanceGreater = 1.0f;
 
+    private GameObject arena;
+     
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
         photonView = GetComponent<PhotonView>();
         position = new Vector3();
         rotation = new Quaternion();
+        arena = GameObject.Find("BattleArena");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,7 +54,7 @@ public class PlayerSync : MonoBehaviour, IPunObservable
     {
         if (stream.IsWriting)
         {
-            stream.SendNext(rigidbody.position);
+            stream.SendNext(rigidbody.position - arena.transform.position);
             stream.SendNext(rigidbody.rotation);
 
             if (synchronizeVelocity)
@@ -61,7 +65,7 @@ public class PlayerSync : MonoBehaviour, IPunObservable
         }
         else
         {
-            position = (Vector3)stream.ReceiveNext();
+            position = (Vector3)stream.ReceiveNext() + arena.gameObject.transform.position;
             rotation = (Quaternion)stream.ReceiveNext();
 
             if(isTeleportableEnabled)

@@ -1,43 +1,103 @@
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
-using Photon.Pun; 
+
+public enum RaiseEventCode
+{
+    PlayerSpawnEventCode = 0
+}
+
 public class SpawnManager : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private GameObject[] playerPrefabs;
+    [SerializeField] private Transform[] playerSpawnPositions;
+    [SerializeField] private GameObject arena;
 
-    [SerializeField] GameObject[] playerPrefabs;
-    [SerializeField] Transform[] playerSpawnPositions;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
     }
-
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
     }
-
-
-
 
     public override void OnJoinedRoom()
     {
-        if(PhotonNetwork.IsConnectedAndReady)
+        if (PhotonNetwork.IsConnectedAndReady)
         {
-            object playerSelectionNumber;
+            SpawnPlayer();
+        }
+    }
 
-            if(PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(ARMulltiplayerBeybladeGame.PLAYER_SELECTION_NUMBER, out playerSelectionNumber))
+    void OnEvent(EventData photonEvent)
+    {
+        if (photonEvent.Code == (byte)RaiseEventCode.PlayerSpawnEventCode)
+        {
+            object[] data = (object[])photonEvent.CustomData;
+
+            Vector3 offsetPosition = (Vector3)data[0];
+            Quaternion rotation = (Quaternion)data[1];
+            int viewID = (int)data[2];
+            int playerSelection = (int)data[3];
+
+            if (playerSelection < 0 || playerSelection >= playerPrefabs.Length)
             {
+                Debug.LogError("Invalid player selection index received.");
+                return;
+            }
 
-                int randomSpawnPoints = UnityEngine.Random.Range(0,playerSpawnPositions.Length-1);
-                Vector3 instantiatePositions = playerSpawnPositions[randomSpawnPoints].position;
+            Vector3 worldPosition = arena.transform.position + offsetPosition;
 
+            GameObject player = Instantiate(playerPrefabs[playerSelection], worldPosition, rotation);
+            PhotonView photonView = player.GetComponent<PhotonView>();
+            photonView.ViewID = viewID;
+            photonView.enabled = true;
+        }
+    }
 
-                PhotonNetwork.Instantiate(playerPrefabs[(int)playerSelectionNumber].name, instantiatePositions, Quaternion.identity);
+    private void SpawnPlayer()
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(ARMulltiplayerBeybladeGame.PLAYER_SELECTION_NUMBER, out object playerSelectionNumber))
+        {
+            int randomSpawnIndex = UnityEngine.Random.Range(0, playerSpawnPositions.Length); // fixed off-by-one
+            Vector3 spawnPosition = playerSpawnPositions[randomSpawnIndex].position;
+
+            GameObject player = Instantiate(playerPrefabs[(int)playerSelectionNumber], spawnPosition, Quaternion.identity);
+            PhotonView photonView = player.GetComponent<PhotonView>();
+
+            if (PhotonNetwork.AllocateViewID(photonView))
+            {
+                object[] data = new object[]
+                {
+                    player.transform.position - arena.transform.position, // local offset
+                    player.transform.rotation,
+                    photonView.ViewID,
+                    playerSelectionNumber
+                };
+
+                RaiseEventOptions raiseOptions = new RaiseEventOptions
+                {
+                    Receivers = ReceiverGroup.Others,
+                    CachingOption = EventCaching.AddToRoomCache
+                };
+
+                SendOptions sendOptions = new SendOptions { Reliability = true };
+
+                PhotonNetwork.RaiseEvent((byte)RaiseEventCode.PlayerSpawnEventCode, data, raiseOptions, sendOptions);
+            }
+            else
+            {
+                Debug.LogError("Failed to allocate ViewID!");
+                Destroy(player);
             }
         }
-
+        else
+        {
+            Debug.LogWarning("PLAYER_SELECTION_NUMBER custom property not found.");
+        }
     }
 }

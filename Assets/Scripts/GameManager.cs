@@ -8,13 +8,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject ui_InformationPanel;
     [SerializeField] TextMeshProUGUI text_InformationPanel;
     [SerializeField] GameObject btn_SearchForGame;
-
+    [SerializeField] GameObject btn_adjust;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         ui_InformationPanel.SetActive(true);
-        text_InformationPanel.text = "Search game for battle!";
-
     }
 
     // Update is called once per frame
@@ -58,6 +56,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
+        btn_adjust.SetActive(false);
+
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
             text_InformationPanel.text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
