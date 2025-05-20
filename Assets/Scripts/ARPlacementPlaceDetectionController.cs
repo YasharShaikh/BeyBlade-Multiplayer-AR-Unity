@@ -10,19 +10,21 @@ public class ARPlacementPlaceDetectionController : MonoBehaviour
     [SerializeField] private GameObject btn_searchGame;
     [SerializeField] private GameObject scaleSlider;
     [SerializeField] private TextMeshProUGUI text_informPanel;
+    [SerializeField] private TextMeshProUGUI statusText;
     private ARPlaneManager arPlaneManager;
     private ARPlacementManager arPlacementManager;
 
     private void Awake()
     {
-        arPlaneManager = GetComponent<ARPlaneManager>();
-        arPlacementManager = GetComponent<ARPlacementManager>();
+        arPlaneManager = FindAnyObjectByType<ARPlaneManager>();
+        arPlacementManager = FindFirstObjectByType<ARPlacementManager>();
+
 
         if (arPlaneManager == null)
-            Debug.LogError("ARPlaneManager component missing!");
+            Debug.LogError("[ARPlacementPlaceDetectionController] ARPlaneManager component missing!");
 
         if (arPlacementManager == null)
-            Debug.LogError("ARPlacementManager component missing!");
+            Debug.LogError("[ARPlacementPlaceDetectionController] ARPlacementManager component missing!");
     }
 
     private void Start()
@@ -33,7 +35,28 @@ public class ARPlacementPlaceDetectionController : MonoBehaviour
         scaleSlider.SetActive(true);
         text_informPanel.text = "Move phone to detect plane surface.";
     }
+    void Update()
+    {
+        bool planeDetected = false;
 
+        foreach (var plane in arPlaneManager.trackables)
+        {
+            if (plane.trackingState == UnityEngine.XR.ARSubsystems.TrackingState.Tracking)
+            {
+                planeDetected = true;
+                break;
+            }
+        }
+
+        if (planeDetected)
+        {
+            statusText.text = " Plane Detected!";
+        }
+        else
+        {
+            statusText.text = " Searching for a plane...";
+        }
+    }
     public void DisableARPlacementPlaneDetection()
     {
         if (arPlaneManager != null)

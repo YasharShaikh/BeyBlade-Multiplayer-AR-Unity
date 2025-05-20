@@ -24,10 +24,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     #region UI Callbacks
     public void JoinRoomButton()
     {
-        text_InformationPanel.text = "Searching for room.";
+        if (!PhotonNetwork.IsConnectedAndReady)
+        {
+            text_InformationPanel.text = "Not connected to Photon.";
+            Debug.LogWarning("Join failed: Not connected.");
+            return;
+        }
+
+        text_InformationPanel.text = "Searching for room...";
         PhotonNetwork.JoinRandomRoom();
         btn_SearchForGame.SetActive(false);
-
     }
 
 
@@ -52,45 +58,53 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log(message);
         text_InformationPanel.text = message;
-        CreateandJoinRoom();
+        CreateAndJoinRoom();
     }
     public override void OnJoinedRoom()
     {
         btn_adjust.SetActive(false);
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+        text_InformationPanel.text = $"Joined room: {PhotonNetwork.CurrentRoom.Name}";
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
         {
-            text_InformationPanel.text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
+            StartCoroutine(DeactivateAfterDelay(ui_InformationPanel, 2.0f));
         }
-        else
-        {
-            text_InformationPanel.text = "Joined room: " + PhotonNetwork.CurrentRoom.Name;
-            StartCoroutine(Deactivate(ui_InformationPanel, 2.0f));
-        }
-        Debug.Log("Joined Room: " + PhotonNetwork.NickName + " in Room:" + PhotonNetwork.CurrentRoom.Name);
+
+        Debug.Log($"Joined Room: {PhotonNetwork.NickName} in Room: {PhotonNetwork.CurrentRoom.Name}");
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        StartCoroutine(Deactivate(ui_InformationPanel, 2.0f));
+        StartCoroutine(DeactivateAfterDelay(ui_InformationPanel, 2.0f));
     }
 
-
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        text_InformationPanel.text = $"Disconnected: {cause}";
+        btn_SearchForGame.SetActive(true);
+    }
     public override void OnLeftRoom()
     {
         SceneLoader.Instance.LoadeScene("Scene_Lobby");
+        btn_SearchForGame.SetActive(true);
+        ui_InformationPanel.SetActive(true);
+        text_InformationPanel.text = "Ready to join a game.";
     }
 
-    private void CreateandJoinRoom()
+    private void CreateAndJoinRoom()
     {
         string randomRoomName = "Room" + UnityEngine.Random.Range(1, 1000).ToString("D3");
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.IsOpen = true;
-        roomOptions.MaxPlayers = 2;
+        RoomOptions roomOptions = new RoomOptions
+        {
+            IsOpen = true,
+            IsVisible = true,
+            MaxPlayers = 2
+        };
         PhotonNetwork.CreateRoom(randomRoomName, roomOptions);
     }
 
-    IEnumerator Deactivate(GameObject gameobject, float seconds)
+    IEnumerator DeactivateAfterDelay(GameObject gameobject, float seconds)
     {
         yield return new WaitForSeconds(seconds);
         gameobject.SetActive(false);

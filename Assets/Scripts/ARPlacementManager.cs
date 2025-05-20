@@ -6,35 +6,44 @@ using UnityEngine.XR.ARSubsystems;
 public class ARPlacementManager : MonoBehaviour
 {
     [SerializeField] private GameObject arena;
+    [SerializeField] private ARRaycastManager raycastManager;
+    [SerializeField] private Camera arCamera;
 
-    private ARRaycastManager raycastManager;
     private static List<ARRaycastHit> raycastHits = new List<ARRaycastHit>();
-    private Camera mainCamera;
-    private Vector2 screenCenter;
     private bool isArenaPlaced = false;
 
     private void Awake()
     {
-        raycastManager = GetComponent<ARRaycastManager>();
-        mainCamera = Camera.main;
+        if (raycastManager == null)
+            raycastManager = FindAnyObjectByType<ARRaycastManager>();
+
+        if (arCamera == null)
+            arCamera = Camera.main;
     }
 
     private void Start()
     {
-        screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
-
         if (arena != null)
             arena.SetActive(false); // Hide until placed
     }
 
     private void Update()
     {
-        if (isArenaPlaced)
+        if (isArenaPlaced || raycastManager == null || arCamera == null)
             return;
+            
+        if(raycastManager == null)
+        {
+            Debug.Log("[ARPlacementManager] raycastManager is null");
+        }
+        if(arCamera == null)
+        {
+            Debug.Log("[ARPlacementManager] arCamera is null ");
+        }
 
-        Ray ray = mainCamera.ScreenPointToRay(screenCenter);
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
 
-        if (raycastManager.Raycast(ray, raycastHits, TrackableType.PlaneWithinPolygon))
+        if (raycastManager.Raycast(screenCenter, raycastHits, TrackableType.PlaneWithinPolygon))
         {
             Pose hitPose = raycastHits[0].pose;
 

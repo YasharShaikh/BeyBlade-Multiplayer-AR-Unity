@@ -1,19 +1,10 @@
 # ninja log v5
-71	2390	7692887810705837	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	426dfed717fa8bed
-10	2284	7692887809727512	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	a3b9c3b6c1e837cb
-38	2350	7692887809833578	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	54e11501eb4e6126
-3122	3802	7692887825087617	D:/MyGame/Unity/Projects/Spinning tops AR/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/3z1y673s/obj/arm64-v8a/libgame.so	fcbb3938320382da
-19	2681	7692887812605622	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	8a495c4cfa49d903
-60	2623	7692887813135167	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	1761235e48c8ef9f
-29	2629	7692887812338150	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	e9f39b53c16137e
-0	3118	7692887817625820	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	716ddac94a5bb379
-49	3122	7692887817999075	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	b473b995e4da2038
-67	1367	7692909606181480	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	e9f39b53c16137e
-36	1368	7692909606181480	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	a3b9c3b6c1e837cb
-15	1373	7692909606171480	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	54e11501eb4e6126
-48	1374	7692909606262142	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	b473b995e4da2038
-6	1378	7692909606282150	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	716ddac94a5bb379
-23	1379	7692909606231916	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	8a495c4cfa49d903
-74	1379	7692909606206632	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	426dfed717fa8bed
-59	1382	7692909606206632	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	1761235e48c8ef9f
-1382	1770	7692909611790835	D:/MyGame/Unity/Projects/Spinning tops AR/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/3z1y673s/obj/arm64-v8a/libgame.so	fcbb3938320382da
+20	4352	7693840154508483	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	e9f39b53c16137e
+38	4356	7693840154575690	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	1761235e48c8ef9f
+10	4363	7693840154550500	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	a3b9c3b6c1e837cb
+32	4386	7693840154893259	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	426dfed717fa8bed
+0	4436	7693840155410832	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	8a495c4cfa49d903
+15	4486	7693840155931019	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	b473b995e4da2038
+26	4492	7693840155941063	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	54e11501eb4e6126
+5	4520	7693840156240217	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	716ddac94a5bb379
+4520	4755	7693840158600184	D:/MyGame/Unity/Projects/Spinning tops AR/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/Debug/3z1y673s/obj/arm64-v8a/libgame.so	fcbb3938320382da
