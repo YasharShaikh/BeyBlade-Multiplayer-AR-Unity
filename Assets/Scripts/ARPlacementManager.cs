@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -12,6 +12,9 @@ public class ARPlacementManager : MonoBehaviour
     private static List<ARRaycastHit> raycastHits = new List<ARRaycastHit>();
     private bool isArenaPlaced = false;
 
+    [Header("Testing Mode")]
+    [SerializeField] private bool disableARPlacement = true; // ✅ Toggle this in Inspector
+
     private void Awake()
     {
         if (raycastManager == null)
@@ -24,22 +27,28 @@ public class ARPlacementManager : MonoBehaviour
     private void Start()
     {
         if (arena != null)
-            arena.SetActive(false); // Hide until placed
+        {
+            if (disableARPlacement)
+            {
+                // ✅ For testing, spawn arena at default position
+                arena.transform.position = new Vector3(0, 0, 2f); // 2m in front of world origin
+                arena.SetActive(true);
+                isArenaPlaced = true;
+                Debug.Log("[ARPlacementManager] Arena spawned in testing mode.");
+            }
+            else
+            {
+                arena.SetActive(false); // Hide until AR places it
+            }
+        }
     }
 
     private void Update()
     {
+        if (disableARPlacement) return; // ✅ Skip AR entirely in testing
+
         if (isArenaPlaced || raycastManager == null || arCamera == null)
             return;
-            
-        if(raycastManager == null)
-        {
-            Debug.Log("[ARPlacementManager] raycastManager is null");
-        }
-        if(arCamera == null)
-        {
-            Debug.Log("[ARPlacementManager] arCamera is null ");
-        }
 
         Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
 

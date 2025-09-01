@@ -15,9 +15,9 @@ public class SceneLoader : MonoBehaviour
 
 
 
-    public void LoadeScene(string _sceneName)
+    public void LoadScene(string _sceneName)
     {
-        Debug.Log("[SceneLoader] LoadeScene called");
+        Debug.Log("[SceneLoader] LoadScene called");
         sceneToBeLoaded = _sceneName;
         StartCoroutine(InitLoadScene());
     }

@@ -2051,7 +2051,7 @@ MonoBehaviour:
   - {fileID: 931434789}
   - {fileID: 2043065518}
   - {fileID: 1650174349}
-  arena: {fileID: 0}
+  arena: {fileID: 760013867502548235}
 --- !u!4 &1056446244
 Transform:
   m_ObjectHideFlags: 0
@@ -7508,6 +7508,7 @@ MonoBehaviour:
   arena: {fileID: 760013867502548235}
   raycastManager: {fileID: 1594761424}
   arCamera: {fileID: 1779784658}
+  disableARPlacement: 0
 --- !u!114 &1594761424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7542,6 +7543,7 @@ MonoBehaviour:
   scaleSlider: {fileID: 341333123}
   text_informPanel: {fileID: 243443568}
   statusText: {fileID: 1855462364}
+  disableARPlacement: 0
 --- !u!114 &1594761426
 MonoBehaviour:
   m_ObjectHideFlags: 0

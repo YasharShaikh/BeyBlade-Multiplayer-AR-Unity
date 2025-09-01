@@ -1,0 +1,5 @@
+D:/MyGame/Unity/Projects/Spinning tops AR/.utmp/RelWithDebInfo/6sjj401t/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/MyGame/Unity/Projects/Spinning tops AR/.utmp/RelWithDebInfo/6sjj401t/arm64-v8a/CMakeFiles/rebuild_cache.dir
+D:/MyGame/Unity/Projects/Spinning tops AR/.utmp/RelWithDebInfo/6sjj401t/arm64-v8a/GameActivity/CMakeFiles/game.dir
+D:/MyGame/Unity/Projects/Spinning tops AR/.utmp/RelWithDebInfo/6sjj401t/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+D:/MyGame/Unity/Projects/Spinning tops AR/.utmp/RelWithDebInfo/6sjj401t/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir

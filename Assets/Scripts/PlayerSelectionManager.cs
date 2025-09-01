@@ -69,11 +69,11 @@ public class PlayerSelectionManager : MonoBehaviour
     }
     public void OnBattleButtonClicked()
     {
-        SceneLoader.Instance.LoadeScene("Scene_Gameplay");
+        SceneLoader.Instance.LoadScene("Scene_Gameplay");
     }
     public void OnBackButtonClicked()
     {
-        SceneLoader.Instance.LoadeScene("Scene_Lobby");
+        SceneLoader.Instance.LoadScene("Scene_Lobby");
     }
     private void UpdatePlayerModeUI()
     {

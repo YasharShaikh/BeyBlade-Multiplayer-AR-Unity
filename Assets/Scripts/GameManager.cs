@@ -41,11 +41,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.InRoom)
         {
+            PhotonNetwork.LocalPlayer.CustomProperties.Clear();
+            PhotonNetwork.CurrentRoom?.Players.Clear();
+
             PhotonNetwork.LeaveRoom();
         }
         else
         {
-            SceneLoader.Instance.LoadeScene("Scene_Lobby");
+            SceneLoader.Instance.LoadScene("Scene_Lobby");
         }
 
     }
@@ -86,7 +89,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public override void OnLeftRoom()
     {
-        SceneLoader.Instance.LoadeScene("Scene_Lobby");
+        SceneLoader.Instance.LoadScene("Scene_Lobby");
         btn_SearchForGame.SetActive(true);
         ui_InformationPanel.SetActive(true);
         text_InformationPanel.text = "Ready to join a game.";

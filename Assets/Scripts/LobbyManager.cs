@@ -1,108 +1,162 @@
+using Photon.Pun;
+using PlayFab;
+using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
-using UnityEngine.Rendering;
-using Photon.Pun.Demo.PunBasics;
-using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static LobbyManager Instance;
 
-    [SerializeField] InputField playerNameInputField;
-    [SerializeField] GameObject ui_Login;
-    [SerializeField] GameObject ui_Lobby;
-    [SerializeField] GameObject ui_3dObject;
-    [SerializeField] GameObject ui_ConnectionStatus;
-    [Space]
-    [SerializeField] Text text_ConnectionStatus;
-    [Space]
-    [SerializeField] string Scene_Loading;
+    [Header("UI References")]
+    [SerializeField] private InputField playerNameInputField;
+    [SerializeField] private GameObject ui_Login;
+    [SerializeField] private GameObject ui_Lobby;
+    [SerializeField] private GameObject ui_3DObject;
+    [SerializeField] private GameObject ui_ConnectionStatus;
+    [SerializeField] private Text text_ConnectionStatus;
+
+    [Header("Scene")]
+    [SerializeField] private string sceneLoading;
+
+    private bool firstTimeLogin = false;
+    private Photon.Realtime.ClientState lastClientState;
 
     #region Unity Methods
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
         Instance = this;
     }
 
-    void Start()
+    private void Start()
     {
-        if (PhotonNetwork.IsConnected) 
-        {
-            ui_Login.SetActive(true);
-            ui_Lobby.SetActive(true);
-            ui_3dObject.SetActive(false);
-            ui_ConnectionStatus.SetActive(false);
-        }else
-        {
-            ui_Login.SetActive(true);
-            ui_Lobby.SetActive(false);
-            ui_3dObject.SetActive(false);
-            ui_ConnectionStatus.SetActive(false);
-        }
-        
+        lastClientState = PhotonNetwork.NetworkClientState;
+        UpdateConnectionStatus();
+        LoginToPlayFab();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        text_ConnectionStatus.text = "Connection Status: " + PhotonNetwork.NetworkClientState;
+        if (lastClientState != PhotonNetwork.NetworkClientState)
+        {
+            lastClientState = PhotonNetwork.NetworkClientState;
+            UpdateConnectionStatus();
+        }
     }
     #endregion
 
+    #region PlayFab Login
+    private void LoginToPlayFab()
+    {
+        var request = new LoginWithCustomIDRequest
+        {
+            CustomId = SystemInfo.deviceUniqueIdentifier,
+            CreateAccount = true
+        };
+
+        PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnLoginFailure);
+    }
+
+    private void OnLoginSuccess(LoginResult result)
+    {
+        Debug.Log("[PlayFab] Login successful!");
+
+        // Check if player already has a display name
+        PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest(), accountResult =>
+        {
+            string displayName = accountResult.AccountInfo.TitleInfo.DisplayName;
+            if (string.IsNullOrEmpty(displayName))
+            {
+                firstTimeLogin = true;
+                SetUIState(true, false, false, false); // Show login input
+            }
+            else
+            {
+                PhotonNetwork.NickName = displayName;
+                SetUIState(false, true, true, false); // Show lobby directly
+                ConnectToPhoton();
+            }
+        }, error =>
+        {
+            Debug.LogError("[PlayFab] GetAccountInfo failed: " + error.GenerateErrorReport());
+        });
+    }
+
+    private void OnLoginFailure(PlayFabError error)
+    {
+        Debug.LogError("[PlayFab] Login failed: " + error.GenerateErrorReport());
+    }
+    #endregion
 
     #region UI Callbacks
     public void OnEnterButtonClick()
     {
-        ui_Login.SetActive(false);
-        ui_Lobby.SetActive(false);
-        ui_3dObject.SetActive(false);
-        ui_ConnectionStatus.SetActive(true);
+        if (!firstTimeLogin) return;
 
         string playerName = playerNameInputField.text;
-        if(!string.IsNullOrEmpty(playerName))
+        if (string.IsNullOrEmpty(playerName))
         {
-            ui_Login.SetActive(false);
-            ui_Lobby.SetActive(false);
-            ui_3dObject.SetActive(false);
-            ui_ConnectionStatus.SetActive(true);
-            if (!PhotonNetwork.IsConnected)
-            {
-                PhotonNetwork.LocalPlayer.NickName = playerName;
-                PhotonNetwork.ConnectUsingSettings();
+            Debug.Log("[LobbyManager] Player Name is invalid");
+            return;
+        }
 
-            }
-        }
-        else
+        // Save display name to PlayFab
+        var request = new UpdateUserTitleDisplayNameRequest { DisplayName = playerName };
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, result =>
         {
-            Debug.Log("[Lobby Manager] Player Name is invalid");
-        }
+            Debug.Log("[PlayFab] Display name set: " + result.DisplayName);
+            PhotonNetwork.NickName = result.DisplayName;
+            firstTimeLogin = false;
+            SetUIState(false, true, true, false);
+            ConnectToPhoton();
+        }, error =>
+        {
+            Debug.LogError("[PlayFab] Failed to set display name: " + error.GenerateErrorReport());
+        });
     }
-
 
     public void OnQuickMatchButtonClick()
     {
-        SceneLoader.Instance.LoadeScene(Scene_Loading);
+        if (!string.IsNullOrEmpty(sceneLoading))
+            SceneLoader.Instance.LoadScene(sceneLoading);
+        else
+            Debug.LogWarning("[LobbyManager] Scene name is not set for quick match.");
     }
     #endregion
 
-    #region Photon callbacks methods
+    #region Photon Methods
+    private void ConnectToPhoton()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
+    }
+
     public override void OnConnected()
     {
-        Debug.Log("[Lobby Manager] connected to the internet");
-    }   
+        Debug.Log("[Photon] Connected to server.");
+    }
 
     public override void OnConnectedToMaster()
     {
-        Debug.Log("[Lobby Manager] connected to the internet, Player: " + PhotonNetwork.LocalPlayer.NickName);
+        Debug.Log("[Photon] Connected to master, Player: " + PhotonNetwork.NickName);
+        SetUIState(false, true, true, false);
+    }
+    #endregion
 
-
-        ui_Login.SetActive(false);
-        ui_Lobby.SetActive(true);
-        ui_3dObject.SetActive(true);
-        ui_ConnectionStatus.SetActive(false);
+    #region UI Helpers
+    private void SetUIState(bool login, bool lobby, bool obj3D, bool connectionStatus)
+    {
+        ui_Login.SetActive(login);
+        ui_Lobby.SetActive(lobby);
+        ui_3DObject.SetActive(obj3D);
+        ui_ConnectionStatus.SetActive(connectionStatus);
     }
 
+    private void UpdateConnectionStatus()
+    {
+        text_ConnectionStatus.text = "Connection Status: " + PhotonNetwork.NetworkClientState;
+    }
     #endregion
 }

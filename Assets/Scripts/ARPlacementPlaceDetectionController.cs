@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using TMPro;
 
@@ -11,20 +11,23 @@ public class ARPlacementPlaceDetectionController : MonoBehaviour
     [SerializeField] private GameObject scaleSlider;
     [SerializeField] private TextMeshProUGUI text_informPanel;
     [SerializeField] private TextMeshProUGUI statusText;
+
     private ARPlaneManager arPlaneManager;
     private ARPlacementManager arPlacementManager;
+
+    [Header("Testing Mode")]
+    [SerializeField] private bool disableARPlacement = true; // ✅ Toggle for testing
 
     private void Awake()
     {
         arPlaneManager = FindAnyObjectByType<ARPlaneManager>();
         arPlacementManager = FindFirstObjectByType<ARPlacementManager>();
 
-
         if (arPlaneManager == null)
-            Debug.LogError("[ARPlacementPlaceDetectionController] ARPlaneManager component missing!");
+            Debug.LogWarning("[ARPlacementPlaceDetectionController] ARPlaneManager component missing!");
 
         if (arPlacementManager == null)
-            Debug.LogError("[ARPlacementPlaceDetectionController] ARPlacementManager component missing!");
+            Debug.LogWarning("[ARPlacementPlaceDetectionController] ARPlacementManager component missing!");
     }
 
     private void Start()
@@ -33,10 +36,22 @@ public class ARPlacementPlaceDetectionController : MonoBehaviour
         btn_adjust.SetActive(false);
         btn_searchGame.SetActive(true);
         scaleSlider.SetActive(true);
-        text_informPanel.text = "Move phone to detect plane surface.";
+
+        if (disableARPlacement)
+        {
+            text_informPanel.text = "Testing Mode: Arena spawned normally.";
+            statusText.text = "AR disabled.";
+        }
+        else
+        {
+            text_informPanel.text = "Move phone to detect plane surface.";
+        }
     }
+
     void Update()
     {
+        if (disableARPlacement) return; // ✅ skip plane detection
+
         bool planeDetected = false;
 
         foreach (var plane in arPlaneManager.trackables)
@@ -48,17 +63,13 @@ public class ARPlacementPlaceDetectionController : MonoBehaviour
             }
         }
 
-        if (planeDetected)
-        {
-            statusText.text = " Plane Detected!";
-        }
-        else
-        {
-            statusText.text = " Searching for a plane...";
-        }
+        statusText.text = planeDetected ? "Plane Detected!" : "Searching for a plane...";
     }
+
     public void DisableARPlacementPlaneDetection()
     {
+        if (disableARPlacement) return; // ✅ already disabled
+
         if (arPlaneManager != null)
             arPlaneManager.enabled = false;
 
@@ -77,6 +88,8 @@ public class ARPlacementPlaceDetectionController : MonoBehaviour
 
     public void EnableARPlacementPlaneDetection()
     {
+        if (disableARPlacement) return; // ✅ testing mode ignores
+
         if (arPlaneManager != null)
             arPlaneManager.enabled = true;
 
